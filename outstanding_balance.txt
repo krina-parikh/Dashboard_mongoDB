@@ -1,0 +1,75 @@
+  public JsonResult OutStandingBalance()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
+            var client = new MongoClient(connectionString);
+            var server = client.GetServer();
+            var database = server.GetDatabase("test");
+            MongoCollection<SalesInvoice> collection = database.GetCollection<SalesInvoice>("TBLTSALESINVOICE");
+            MongoCollection<Company> collectionCompany = database.GetCollection<Company>("TBLMCOMPANY");
+            
+            var cmp = (from c in collectionCompany.AsQueryable()
+                       where (c.COMPANYSTATUS.Equals("Active") && c.ISDELETED.Equals(false))
+                       select new { c.COMPANYID, c.COMPANYNAME }).ToList();
+            var balance = new Dictionary<int, double>();
+            
+            if (company == 0)
+            {
+                var outBal = (from r in collection.AsQueryable() orderby r.CREATEDDATE descending
+                              select new { r.OUTSTANDINGAMOUNT, r.CUSTOMERID, r.COMPANYID, r.INVOICEID }).Take(1000);
+
+                var mapping = new Dictionary<int,int>();
+                var map = new Dictionary<int, int>();
+                
+                foreach (var x in outBal)
+                {
+                    var k = from m in mapping join n in map on m.Key equals n.Key
+                            where (m.Value == x.CUSTOMERID && n.Value == x.COMPANYID)
+                            select new {KEY1 = m.Key, KEY2 = n.Key };
+                    if (k.Count() == 0)
+                    {
+                        mapping.Add(x.INVOICEID, x.CUSTOMERID);
+                        map.Add(x.INVOICEID, x.COMPANYID);
+                        balance.Add(x.INVOICEID, x.OUTSTANDINGAMOUNT);
+                    }
+                    else
+                    {
+                        foreach (var z in k)
+                        {
+                            if(z.KEY1 == z.KEY2)
+                                balance[z.KEY2] = x.OUTSTANDINGAMOUNT + balance[z.KEY2];
+                        }
+                    }
+                   
+                }
+
+                var bal = from m in mapping
+                          join n in map on m.Key equals n.Key
+                          join b in balance on m.Key equals b.Key
+                          select new {CUSTOMERID = m.Value, COMPANYID = n.Value, OUTSTANDINGAMOUNT = b.Value };
+
+                var result = from c in cmp 
+                             join b in bal on c.COMPANYID equals b.COMPANYID
+                             select new {b.CUSTOMERID,c.COMPANYNAME,b.OUTSTANDINGAMOUNT };
+                return Json(result.ToList(), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+               var bal = (from r in collection.AsQueryable() where r.COMPANYID == company
+                          select new { r.OUTSTANDINGAMOUNT, r.CUSTOMERID, r.COMPANYID}).Take(1000);
+                foreach (var z in bal)
+                {
+                    if (balance.ContainsKey(z.CUSTOMERID))
+                    {
+                        balance[z.CUSTOMERID] = balance[z.CUSTOMERID] + z.OUTSTANDINGAMOUNT;
+                    }
+                    else
+                    {
+                        balance.Add(z.CUSTOMERID, z.OUTSTANDINGAMOUNT);
+                    }
+                }
+            }
+            var data = from b in balance
+                       select new { CUSTOMERID = b.Key, OUTSTANDINGAMOUNT = b.Value };
+            return Json(data.ToList(), JsonRequestBehavior.AllowGet);
+            
+        }

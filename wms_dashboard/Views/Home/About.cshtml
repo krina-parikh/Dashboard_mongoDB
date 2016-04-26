@@ -1,0 +1,37 @@
+﻿$(function() {
+        // Create the chart
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'comp',
+                type: 'pie'
+            },
+            title: {
+                text: 'Browser market share, April, 2011'
+            },
+            yAxis: {
+                title: {
+                    text: 'Total percent market share'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    shadow: false
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.point.name +'</b>: '+ this.y +' %';
+                }
+            },
+            series: [{
+                name: 'Browsers',
+                data: [["Firefox",6],["MSIE",4],
+                size: '60%',
+                innerSize: '20%',
+                showInLegend:true,
+                dataLabels: {
+                    enabled: false
+                }
+            }]
+        });
+    });

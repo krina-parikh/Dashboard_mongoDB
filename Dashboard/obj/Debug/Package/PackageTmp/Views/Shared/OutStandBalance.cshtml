@@ -1,0 +1,131 @@
+﻿<script src="../../Scripts/script.js" type="text/javascript"></script>
+
+
+ <script type="text/javascript">
+            //Global Chart
+        var chart;
+        $(document).ready(function () {
+                     var colors = Highcharts.getOptions().colors;
+            //define the options
+            var options = {
+                chart: {
+                    renderTo: 'OUTSTAND'
+                },
+                title: {
+                    text: 'OutStanding Balance'
+                },
+                xAxis: {
+                   categories: [],
+                labels: {
+                    rotation: 0,
+                    
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        display: 'block',
+                        width: '60px'
+        
+                    }
+                }
+                    
+                },
+                yAxis: {
+                    min: 0,
+                    max: 600000000,
+                    title: {
+                        text: 'Total Outstanding Amount'
+                    }
+                },
+              
+                tooltip: {
+                   
+                },
+                plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0,
+                     cursor: 'pointer',
+                    point: {
+                        events: {
+                            click: function () {
+                                
+                            var x = this.drilldown.data;
+                            var y = this.name;
+                                $.ajax({
+                                     "url": '@Url.Action("DrillDown")',
+                                     "type": "POST",
+                                     "dataType": "html",
+                                     "data":{c: parseInt(x), str: y},
+                                     "success": function (data) {
+                                         $('#popup_content').html(data);
+                                     }
+                                });
+                                 loadDiv();
+                            }
+                        }
+                    }
+                }
+                   //bar
+                },
+                legend: {
+                    enabled: false
+            },
+       
+              
+                series: []
+            }
+            //Calls the JSON
+            jQuery.getJSON('@Url.Action("OutStandingBalance")', null, function (items) {
+                //Creates the new series as stated in the documentation
+                //http://www.highcharts.com/ref/#series
+                
+                var series = {
+                    type: 'column',
+                    name: 'Balance',
+                    //nameS: 'Click to view Detail',
+                    data: []
+                };
+                var i = 0;
+                jQuery.each(items, function (itemNo, item) {
+                    //Get the items from the JSON and add then
+                    //to the data array of the series
+                    series.data.push({
+                        name:item.COMPANYNAME,
+                        color:colors[i++],
+                        y: parseFloat(item.Value),
+                        drilldown:{
+                            data: item.COMPANYID
+                        }
+                    })
+                });
+                options.series.push(series);
+
+                //Create the chart
+                chart = new Highcharts.Chart(options);
+                chart.render();
+            });
+        });
+
+        function hoverOver(){
+                $('#ecs_tooltip').show();
+	    }
+        function hoverOut(){
+            $('#ecs_tooltip').hide();
+        }
+           function exit(){
+            disablePopup();  // function close pop up
+        }
+    </script>
+
+     <div id="toPopup">
+
+        <div class="close" onclick="exit()" onmouseover = "hoverOver()" onmouseout = "hoverOut()"></div>
+       	<span class="ecs_tooltip" id = "ecs_tooltip">Press Esc to close <span class="arrow"></span></span>
+		<div id="popup_content"> <!--your content start-->
+           
+        </div> <!--your content end-->
+
+    </div> <!--toPopup end-->
+
+	<div class="loader"></div>
+   	<div id="backgroundPopup"></div>

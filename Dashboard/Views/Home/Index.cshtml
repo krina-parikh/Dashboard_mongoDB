@@ -1,0 +1,283 @@
+﻿@model IEnumerable<Dashboard.Models.Company>
+@using Dashboard.Controllers
+@using Dashboard.Helpers
+
+@{
+    ViewBag.Title = "DashBoard";
+    var sDate = HomeController.startDate;
+    var eDate = HomeController.endDate;
+}
+
+<head>
+ <link href="@Url.Content("~/Content/css/calenderControl.css")" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+     
+<script src="@Url.Content("~/Scripts/topItems.js")" type="text/javascript"></script>     
+<script src="@Url.Content("~/Scripts/highcharts.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js" type ="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
+ </head>
+ <body>
+  
+    <div class = "header" >
+        @if (HomeController.salesOption != 2)
+        {
+            @Html.Partial("DailyPartial") 
+        }
+        else
+        {
+            @Html.Partial("WeeklySales") 
+        }
+        <div id="contain"  style="min-width:1020px; height:320px; margin:0 auto; float:left; border:#cccccc 2px solid; border-radius:5px;"></div>
+            <div class = "balance" style=" float:right">
+                <ul class="ls_sales_opt">
+                    <li> <label title="From:">Select Company : </label></li>
+                        <li>@Html.DropDownList("Company", (IEnumerable<SelectListItem>)ViewBag.LIST,"All ",new { @onchange = "change()" })</li>
+                    <li> Sales Type :</li>
+                        <span> @Html.RadioButton("Sales", "1", true, new { @onchange = "check(1)" }) </span><span> Daily</span>
+                        <span> @Html.RadioButton("Sales", "2", new { @onchange = "check(2)" }) </span><span> Weekly </span>
+                        <span> @Html.RadioButton("Sales", "3", new { @onchange = "check(3)" }) </span><span> Monthly </span>    
+                                
+                    <li style=" padding-top:10px; padding-bottom:0px; font-weight:bold"> Select Date Range: </li> 
+                        <li style="padding-bottom:0px"><label title="from"> From: </label> </li>
+                            <li><input type="text" id="datepicker" onchange="dateValue()"/></li>
+                    <li style="padding-bottom:0px;"><label title="to"> To: </label></li>
+                        <li> <input type="text" id="datepicker2" onchange="dateValue()"/> </li>
+                    <li>@Ajax.ActionLink("Search", "Partial", new {name = "Sales" }, new AjaxOptions()
+                    {
+                        UpdateTargetId = "contain",
+                        HttpMethod = "Get",
+                        InsertionMode = InsertionMode.Replace
+                    })</li>
+                </ul>
+            </div>
+    </div>
+    <div class="test">
+    <div style="float:left">
+        <p style="font-size:14px; text-align:left; color:Gray"> Sales Today </p>
+        <img src="../../Content/images/gChart.png" style="height:auto;width:auto; float:left"/>
+        <table style="width:100px; margin-top:5px">
+        <tr><td style=" text-align:right; font-size:22px; color:CaptionText">$12,324.34</td></tr>
+        <tr><td style="color:Gray; font-size:13px; text-align:right">Total</td></tr>
+        </table>
+     </div>
+        
+     <div class="Img"></div>
+     <div style="float:left">
+     <p style="font-size:14px; text-align:left; color:Gray; visibility:hidden"> Sales Today </p>
+         <img src="../../Content/images/Chart.png" style="float:left" />
+         <table style=" float:left; width:70px"><tr><td style=" font-size:22px; text-align:right">213</td></tr>
+         <tr><td style=" text-align:right; color: Gray; font-size:13px">Orders</td></tr>
+         </table>
+     </div>
+     <div class="Img"></div>
+     <div style="float:left;">
+     <p style="font-size:14px; text-align:left; visibility:hidden"> Sales Today </p>
+     <img src="../../Content/images/Chart_1.png" style="height:auto;width:auto; float:left" />
+         <table style=" float:left; width:70px"><tr><td style=" font-size:22px; text-align:right">12</td></tr>
+         <tr><td style=" text-align:right; color: Gray; font-size:13px">Customers</td></tr>
+         </table>
+     </div>
+     <div class="Img"></div>
+     @Html.Partial("Test")
+          <div style=" float:left;">
+              <div id = "comp" style="width:80px; height:80px; float:right;"></div>
+          </div>
+          <div style = "padding-top:10px; font-size:13px">
+          <p id="perCent"></p>
+              <div style="width:20px; float:left; margin:3px 0px 0px 0px">
+                <img src="../../Content/images/legend.png" style="padding:2px" />  <br />
+                <img src="../../Content/images/legend1.png" style="padding:2px"/> 
+              </div>
+              <div style="float:left; margin:5px 0px 0px 0px"> Sales Today <br />Sales Previous Day </div>
+          </div>
+    </div>
+            
+    <div class="totalSales">
+        <div id = "SaleAmount"style="float:left;"></div>
+            
+            <div class ="Img"></div>
+        
+        <div id = "order" style="float:left; margin:0px 5px 5px 5px"></div>
+            <div class="Img"></div>
+        <div id = "client" style="float:left; margin:0px 5px 5px 5px"></div>
+    </div>
+
+ <div class = "clr"></div>
+ 
+ <div class="headerB" style=" height:538px">
+ 
+  @Html.Partial("OutStandBalance")
+    <div id="OUTSTAND" class="outstand"></div>    
+ <!--<div class="outstand" style=" height:100px;margin:8px 0px;float:right "> <p>OutStanding Balance</p></div>   -->
+
+    <div class = "top_items_text"> <p>Top 10 Items </p>
+            <ul class = "ls_sales_opt" style="padding-left:10px">
+                <li><label title="From:">Select Company: </label>
+                    <span>@Html.DropDownList("Compny", (IEnumerable<SelectListItem>)ViewBag.LIST, " All ", new { @onchange = "chnge()" }) </span>
+                <label title="From:" style=" padding-left:5px">Select Category: </label>
+                      <span>@Html.DropDownList("Category", new SelectList(Enumerable.Empty<SelectListItem>()), new { @onchange = "changeCtgry()" }) </span></li> 
+                        <li><span> <a href="" onclick="topItem('@HomeController.flag')" style="color:rgb(3,74,243)"> Search</a>
+                      </span></li>
+            </ul>
+            
+</div>
+
+    <div class = "top_items"> 
+   @Html.Partial("TopItems")
+   <div id = "topGrid" class = "CSSTableGenerator">
+    <table id="grid_tbl" style="float: left;" >
+    
+    </table>
+      </div>
+  </div>
+     </div>       
+<script type ="text/javascript">
+       $(function () {
+             $("#datepicker").datepicker();
+             $("#datepicker2").datepicker();
+             $("#datepicker1").datepicker();
+             var z = @HomeController.salesOption;
+             var rad = document.getElementsByName("Sales");
+             rad[z-1].checked = true;
+             var x = @sDate.Month +"/"+@sDate.Day+"/"+@sDate.Year;
+             document.getElementById("datepicker").value = x;
+             x = @eDate.Month +"/"+@eDate.Day+"/"+@eDate.Year;
+             document.getElementById("datepicker2").value = x;
+         });
+      
+
+function change() {
+    var x = document.getElementById("Company").value;
+    alert("company " + x);
+             $.ajax({
+                 "url": '@Url.Action("DropdownList/")' + x,
+                 "type": "get",
+                 "dataType": "json",
+                 "success": function (data) {
+                 },
+                 "error": function () {
+                     alert("error");
+                 }
+             });
+         }
+         function dateValue() {
+             var x = document.getElementById("datepicker").value;
+             var y = document.getElementById("datepicker2").value;
+             alert("date change");
+             var rad = document.getElementsByName("Sales");
+             
+             for (var i = 0, len = rad.length; i<len; i++){
+                if(rad[i].checked){
+                    
+                    break;
+                }
+             }
+             var d = new Date(x);
+             var j = new Date(y);
+            if (rad[1].checked) {
+                alert("rad[1]");
+                 var dte = d.getUTCDate();
+                 var mnth = d.getUTCMonth();
+                 var yr = d.getUTCFullYear();
+                 var dy = d.getUTCDay();
+                 var z = new Date(yr, mnth, dte - dy);
+                 var e = new Date(j.getUTCFullYear(), j.getUTCMonth(), j.getUTCDate() - j.getUTCDay() + 6);
+                 q = (z.getMonth() + 1) + "/" + z.getDate() + "/" + z.getFullYear();
+                 s = (e.getMonth() + 1) + "/" + e.getDate() + "/" + e.getFullYear();
+                
+             }
+             else {
+                 q = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+                 s = (j.getMonth() + 1) + "/" + j.getDate() + "/" + j.getFullYear();
+             }
+             $.ajax({
+                 "url": '@Url.Action("getDate")',
+                 "type": "get",
+                 "dataType": "json",
+                 "data": {sd: q, ed: s},
+                 "success": function (data) {
+                 
+               }
+             });
+     }
+ 
+     function check(opt) {
+         var str = "Week";
+         var rad = document.getElementsByName("Sales");
+         alert(opt);
+         switch(opt){
+         case 2:
+            var x = document.getElementById("datepicker").value;
+            var y = document.getElementById("datepicker2").value;
+            var d = new Date(x);
+                 var dy = d.getUTCDay();
+                 var j = new Date(y);
+                 var z = new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - dy);
+                 var e = new Date(j.getUTCFullYear(), j.getUTCMonth(), j.getUTCDate() - j.getUTCDay() + 6);
+                 x = (z.getMonth() + 1) + "/" + z.getDate() + "/" + z.getFullYear();
+                 y = (e.getMonth() + 1) + "/" + e.getDate() + "/" + e.getFullYear();
+                   $.ajax({
+                 "url": '@Url.Action("getDate")',
+                 "type": "get",
+                 "dataType": "json",
+                 "data": {sd: x, ed: y},
+                 "success": function (data) {
+                 
+               }
+             });
+         break;
+         default:
+         }
+         for (var i = 0, len = rad.length; i < len; i++) {
+             if (rad[i].checked) {
+                 $.ajax({
+                     "url": '@Url.Action("SalesType")' ,
+                     "type": "get",
+                     "dataType": "json",
+                     "data": { option: rad[i].value },
+                     "success": function (data) {
+                     
+                     }
+                 });
+                 break;
+             }
+         }
+    }
+
+
+ function changeCtgry() {
+        var x = document.getElementById("Category").value;
+        $.ajax({
+            "url": '@Url.Action("CategoryDList/")' + x,
+            "type": "get",
+            "dataType": "json",
+            "success": function (data) {
+            },
+            "error": function () {
+                alert("error");
+            }
+        });
+    }
+
+    function chnge() {
+        var x = document.getElementById("Compny").value;
+        $.getJSON('@Url.Action("CategoryList/")',{cmpny: parseInt(x)}, function (data) {
+            var loc = $('#Category');
+            loc.empty();
+            loc.append(
+            $('<option/>', {
+                value: 0
+            }).html('-Select Category-')
+            );
+            $(data).each(function () {
+                loc.append(
+                $('<option/>', {
+                    value: this.ITEMCATEGORYID
+                }).html(this.CATEGORYNAME)
+            );
+            });
+        });
+    }
+</script>

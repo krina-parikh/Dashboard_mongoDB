@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+@if (@ViewBag.option == "Sales")
+{
+    @Html.Partial("DailyPartial") 
+}
+else
+{
+    @Html.Partial("WeeklySales")
+} 
+  <div id="contain"></div>

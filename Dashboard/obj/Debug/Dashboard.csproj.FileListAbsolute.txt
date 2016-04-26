@@ -1,0 +1,15 @@
+C:\triveni_krina\Dashboard\Dashboard\bin\Dashboard.dll
+C:\triveni_krina\Dashboard\Dashboard\bin\Dashboard.pdb
+C:\triveni_krina\Dashboard\Dashboard\bin\AjaxControlToolkit.dll
+C:\triveni_krina\Dashboard\Dashboard\bin\EntityFramework.dll
+C:\triveni_krina\Dashboard\Dashboard\bin\MongoDB.Bson.dll
+C:\triveni_krina\Dashboard\Dashboard\bin\MongoDB.Driver.dll
+C:\triveni_krina\Dashboard\Dashboard\bin\Telerik.Web.UI.dll
+C:\triveni_krina\Dashboard\Dashboard\bin\Telerik.Web.UI.Skins.dll
+C:\triveni_krina\Dashboard\Dashboard\bin\AjaxControlToolkit.pdb
+C:\triveni_krina\Dashboard\Dashboard\bin\EntityFramework.xml
+C:\triveni_krina\Dashboard\Dashboard\bin\MongoDB.Bson.xml
+C:\triveni_krina\Dashboard\Dashboard\bin\MongoDB.Driver.xml
+C:\triveni_krina\Dashboard\Dashboard\obj\Debug\ResolveAssemblyReference.cache
+C:\triveni_krina\Dashboard\Dashboard\obj\Debug\Dashboard.dll
+C:\triveni_krina\Dashboard\Dashboard\obj\Debug\Dashboard.pdb

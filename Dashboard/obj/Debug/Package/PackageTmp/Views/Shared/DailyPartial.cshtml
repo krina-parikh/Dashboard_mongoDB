@@ -1,0 +1,174 @@
+﻿ @using Dashboard.Controllers
+ @{
+     var sDate = HomeController.startDate;
+     var sD = sDate.Month + "/" + sDate.Day + "/" + sDate.Year;
+     var eDate = HomeController.endDate;
+     var eD = eDate.Month + "/" + eDate.Day + "/" + eDate.Year;
+     var optn = HomeController.salesOption;
+ }
+
+   
+ <script type="text/javascript">
+            //Global Chart
+        var chart;
+        var start = new Date(@sD);
+        var name;
+         var label = 15 * 24 * 3600 * 1000;
+           if(@optn == 3){
+                       label = 30 * 24 * 3600 * 1000;
+                       name = 'Monthly Sales';
+           }
+           else{
+            name = 'Daily Sales';
+           }
+                        
+        $(document).ready(function () {
+                     var colors = Highcharts.getOptions().colors;
+            //define the options
+            var options = {
+                chart: {
+                    renderTo: 'contain',
+                },
+                title: {
+                    text: name
+                },
+               xAxis: {
+                    type: 'datetime',
+                  //    exporting: label,
+                    
+                tickInterval: label, // one week
+                tickWidth: 0,
+                pointStart: Date.UTC(start),
+                    
+                    labels: {
+                        rotation: 0,
+                       // x: 0,
+                        //y: -3,
+                        style: {
+                            fontSize: '12px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    },
+                   credits: {
+                        enabled: false
+                   },
+        // Only show labels where there is room for them
+               
+                    title: {
+                        text: ''
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'SAles Amount'
+                    },
+                    labels: {
+                        formatter: function() {
+                            return '$' + this.value ;
+                        }
+                    }
+                },
+              
+                tooltip: {
+                   
+                },
+                plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0,
+                    
+                },
+                spline: {
+                    marker: {
+                        radius: 4,
+                        //lineColor: '#660666',
+                        lineWidth: 1
+                    },
+                      
+                     dataLabels: {
+                        enabled: false
+                    }
+                }
+                   //bar
+                },
+                        series: {
+            pointStart: Date.UTC(start),
+            pointInterval: 336 * 3600 * 1000 // one day
+        },
+                legend: {
+                enabled: false,
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+               // x: 2,
+               // y: 20,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF',
+                shadow: true
+            },
+                series: []
+            }       // end of var option[]
+            //Calls the JSON
+            jQuery.getJSON('@Url.Action("DailySales")', null, function (items) {
+                //Creates the new series as stated in the documentation
+                //http://www.highcharts.com/ref/#series
+                
+                var series = {
+                    type: 'spline',
+                    name: 'Daily Sales',
+                    pointInterval: 24 * 3600 * 1000,
+                    pointStart: Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()),
+                    data: []
+                };
+                
+                jQuery.each(items, function (itemNo, item) {
+                    //Get the items from the JSON and add then
+                    //to the data array of the series
+                  var str,day, date;
+                  //str = item.Key.replace(/\D/g, "");
+                  date = new Date(parseInt((item.INVOICEDATE).substr(6)));
+                      day = Date.UTC(date.getUTCFullYear(),date.getUTCMonth(), date.getUTCDate());
+                  
+                    series.data.push({
+                        name: day,
+                        x: day,
+                        y: (day,item.INVOICEAMOUNT),
+                        color: colors[5]
+          
+                    })
+                 
+
+                });         // end of jQuery-each
+               
+                options.series.push(series);
+                //Create the chart
+                chart = new Highcharts.Chart(options);
+                chart.render();
+            });     // end of getJson method call
+            var z = '<p style="color:Gray; text-align:left;padding-left:5px">'+ name + 
+                    '</p><img src="../../Content/images/bChart.png" style="height:auto;width:auto; float:left"/>';
+             
+            z = z + ' <table style="margin-top:5px;"><tr><td style="font-size:22px;">$'+ @HomeController.tsales +
+                '</td></tr><tr><td style="font-size:13px;color: Gray;float:right;">Total</td></tr></table>';
+             $('#SaleAmount').empty();
+             $('#SaleAmount').append(z);
+            z = '<p style="font-size:14px; text-align:left; visibility:hidden"> Sales Today </p>';
+            z =z + '<img src="../../Content/images/Chart.png" style="float:left" />' +
+                    '<table style=" float:left; width:70px; text-align:right">' +
+                    '<tr><td style=" font-size:22px">' + @HomeController.cnt[1] +  '</td></tr>' +
+                    '<tr><td style=" text-align:right; color: Gray; font-size:13px">' + 'Orders</td></tr></table>';
+             $('#order').empty();
+             $('#order').append(z);
+            z = '<p style="font-size:14px; text-align:left; visibility:hidden"> Sales Today </p>';
+            z = z + '<img src="../../Content/images/Chart_1.png" style="height:auto;width:auto; float:left" />' +
+                    '<table style=" float:left; text-align:right; width:70px"><tr><td style=" font-size:22px">' + @HomeController.cnt[0] + '</td></tr>' +
+                    '<tr><td style=" text-align:right; color: Gray; font-size:13px">Customers</td></tr></table>';
+             $('#client').empty();
+             $('#client').append(z);
+
+        });     //end of main function
+
+  
+    </script>

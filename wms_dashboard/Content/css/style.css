@@ -1,0 +1,284 @@
+﻿ 
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+}
+*{
+	margin: 0;
+	padding: 0;
+}
+body {
+	margin:0px;
+	padding:0px;
+	font-size:12px;
+	color:#000000;
+	font-weight:normal;
+	font-family:Arial, Helvetica, sans-serif;
+	
+}
+ @font-face {
+font-family:'CalibriRegular';
+ src:url('../fonts/calibri-webfont.eot');
+ src: url('../fonts/calibri-webfont.eot?#iefix') format('embedded-opentype'),  url('../fonts/calibri-webfont.woff') format('woff'),  url('../fonts/calibri-webfont.ttf') format('truetype'),  url('../fonts/calibri-webfont.svg#CalibriRegular') format('svg');
+ font-weight: normal;
+ font-style: normal;
+}
+ @font-face {
+ font-family: 'OswaldRegular';
+ src: url('../fonts/oswald-regular.eot');
+ src: url('../fonts/oswald-regular.eot?#iefix') format('embedded-opentype'),  url('../fonts/oswald-regular.woff') format('woff'),  url('../fonts/oswald-regular.ttf') format('truetype'),  url('../fonts/oswald-regular.svg#OswaldRegular') format('svg');
+ font-weight: normal;
+ font-style: normal;
+}
+.clr {clear:both; padding:10px 0px 5px 0px;}
+
+.ls_sales_opt{list-style:none; display:block}
+.ls_sales_opt li {padding:5px 0 5px 4px; font: 13px 'Verdana'; text-align:left}
+.ls_sales_opt span {padding:5px 0 5px 4px; font: 13px 'Verdana'}
+.ls_sales_opt li a {font: 15px 'Verdana'}
+
+.salesOpt {
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    
+}
+
+.top_items_text {
+   font-size:22px;
+   font-weight:normal;
+   color:rgb(39, 75, 109);
+   font-family:Calibri;
+   letter-spacing:normal;
+   text-align:center;
+   margin-top:10px;
+   border:#cccccc 2px solid; 
+   border-radius:5px; 
+   width:45%;
+   margin: 0px 5px 5px 0px;
+   padding-bottom:5px;
+}
+
+.top_items{width:45%;border:#cccccc 2px solid;border-radius:5px;}
+
+.item_text
+{
+    font-size:14px;
+    font-family:@Gulim;
+}
+
+.bottomGrid tr:hover
+{
+    cursor:pointer;
+}
+
+.outstand { width:700px;float:right; border:#cccccc 2px solid;border-radius:5px;height:537px}
+.balance
+{
+    width: 256px;
+    float:right; 
+    border:#cccccc 2px solid; 
+    border-radius:5px; 
+    margin: 0px 2px 5px 0px;
+    padding: 15px 0px 20px 15px;
+    height:285px ;
+}
+.test{width:725px; height:80px; border:#cccccc 2px solid; border-radius:5px; float:left; margin:5px 5px 0px 0px; padding:0px 5px 0px 5px;
+       }
+.Img
+{
+    background: url("../../Content/images/wbg.gif"); height:70px; float:left; width:1px;
+}      
+#Company{ width:200px;}
+
+.totalSales{width: 560px;float:right; border:#cccccc 2px solid;border-radius:5px;
+         height:80px; font-size:15px; }
+
+.change
+{
+    border:1px solid #000000;
+}
+
+.CSSTableGenerator {
+	margin:10px 30px 15px 30px;
+	padding:0px ;
+	width:-moz-fit-content;
+	margin-left:30px;
+	box-shadow: 1px 5px 5px #888888;
+	border:1px solid #000000;
+	
+	-moz-border-radius-bottomleft:0px;
+	-webkit-border-bottom-left-radius:0px;
+	border-bottom-left-radius:0px;
+	
+	-moz-border-radius-bottomright:0px;
+	-webkit-border-bottom-right-radius:0px;
+	border-bottom-right-radius:0px;
+	
+	-moz-border-radius-topright:0px;
+	-webkit-border-top-right-radius:0px;
+	border-top-right-radius:0px;
+	
+	-moz-border-radius-topleft:0px;
+	-webkit-border-top-left-radius:0px;
+	border-top-left-radius:0px;
+	
+}.CSSTableGenerator table{
+	width:100%;
+	height:100%;
+	margin:0px;padding:0px;
+}.CSSTableGenerator tr:last-child td:last-child {
+	-moz-border-radius-bottomright:0px;
+	-webkit-border-bottom-right-radius:0px;
+	border-bottom-right-radius:0px;
+}
+.CSSTableGenerator table tr:first-child td:first-child {
+	-moz-border-radius-topleft:0px;
+	-webkit-border-top-left-radius:0px;
+	border-top-left-radius:0px;
+}
+.CSSTableGenerator table tr:first-child td:last-child {
+	-moz-border-radius-topright:0px;
+	-webkit-border-top-right-radius:0px;
+	border-top-right-radius:0px;
+}.CSSTableGenerator tr:last-child td:first-child{
+	-moz-border-radius-bottomleft:0px;
+	-webkit-border-bottom-left-radius:0px;
+	border-bottom-left-radius:0px;
+}.CSSTableGenerator tr:hover td{
+	
+}
+.CSSTableGenerator tr:nth-child(odd){ background-color:#e5e5e5; }
+.CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
+	vertical-align:middle;
+	border:1px solid #000000;
+	border-width:0px 1px 1px 0px;
+	text-align:left;
+	padding:8px;
+	font-size:12px;
+	font-family:Arial;
+	font-weight:normal;
+	color:#000000;
+}.CSSTableGenerator tr:last-child td{
+	border-width:0px 1px 0px 0px;
+}.CSSTableGenerator tr td:last-child{
+	border-width:0px 0px 1px 0px;
+}.CSSTableGenerator tr:last-child td:last-child{
+	border-width:0px 0px 0px 0px;
+}
+.CSSTableGenerator tr:first-child td{
+		background:-o-linear-gradient(bottom, #cccccc 5%, #b2b2b2 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #cccccc), color-stop(1, #b2b2b2) );
+	background:-moz-linear-gradient( center top, #cccccc 5%, #b2b2b2 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#cccccc", endColorstr="#b2b2b2");	background: -o-linear-gradient(top,#cccccc,b2b2b2);
+
+	background-color:#cccccc;
+	border:0px solid #000000;
+	text-align:center;
+	border-width:0px 0px 1px 1px;
+	font-size:12px;
+	font-family:Arial;
+	font-weight:bold;
+	color:#000000;
+}
+.CSSTableGenerator tr:first-child:hover td{
+	background:-o-linear-gradient(bottom, #cccccc 5%, #b2b2b2 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #cccccc), color-stop(1, #b2b2b2) );
+	background:-moz-linear-gradient( center top, #cccccc 5%, #b2b2b2 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#cccccc", endColorstr="#b2b2b2");	background: -o-linear-gradient(top,#cccccc,b2b2b2);
+
+	background-color:#cccccc;
+}
+.CSSTableGenerator tr:first-child td:first-child{
+	border-width:0px 0px 1px 0px;
+}
+.CSSTableGenerator tr:first-child td:last-child{
+	border-width:0px 0px 1px 1px;
+}
+
+/* popup Div style*/
+#backgroundPopup {
+    z-index:1;
+    position: fixed;
+    display:none;
+    height:100%;
+    width:100%;
+    background:#000000;
+    top:0px;
+    left:0px;
+}
+#toPopup {
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 3px solid #ccc;
+    border-radius: 3px 3px 3px 3px;
+    color: #333333;
+    display: none;
+    font-size: 14px;
+    left: 50%;
+    margin-left: -402px;
+    position: fixed;
+    top: 15%;
+    width: 700px;
+    z-index: 2;
+}
+div.loader {
+    background: url("../img/loading.gif") no-repeat scroll 0 0 transparent;
+    height: 32px;
+    width: 32px;
+    display: none;
+    z-index: 9999;
+    top: 40%;
+    left: 50%;
+    position: absolute;
+    margin-left: -10px;
+}
+div.close {
+    background: url("../images/close_x.gif") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    height: 15px;
+    position: absolute;
+    right: 17px;
+    top: 20px;
+    width: 15px;
+}
+span.ecs_tooltip {
+    background: none repeat scroll 0 0 #000000;
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF;
+    display: none;
+    font-size: 11px;
+    height: 16px;
+    opacity: 0.7;
+    padding: 4px 3px 2px 5px;
+    position: absolute;
+    right: -35px;
+    text-align: center;
+    top: -8px;
+    width: 90px;
+}
+span.arrow {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid #000000;
+    display: block;
+    height: 1px;
+    left: 40px;
+    position: relative;
+    top: 3px;
+    width: 1px;
+}
+div#popup_content {
+    margin: 4px 7px;
+    /* remove this comment if you want scroll bar
+    overflow-y:scroll;
+    height:375px;
+*/    
+}
+
+.update
+{
+    color:rgb(3,114,243);
+    font-size:14px;
+}

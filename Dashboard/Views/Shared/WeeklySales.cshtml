@@ -1,0 +1,151 @@
+﻿@using Dashboard.Controllers
+
+   <script type="text/javascript">
+            //Global Chart
+        var chart;
+        $(document).ready(function () {
+                     var colors = Highcharts.getOptions().colors;
+            //define the options
+            var options = {
+                chart: {
+                    renderTo: 'contain',
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Weekly Sales'
+                },
+                xAxis: {
+                   categories: [],
+                labels: {
+                    rotation: 0,
+                    align: 'center',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        display: 'block'
+                    }
+                },
+            
+                    title: {
+                        text: ''
+                    }
+                    
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Sales Amount'
+                    }
+                },
+              
+                tooltip: {
+                  formatter: function() {
+                    var point = this.point,
+                        s = '' + point.range +' - '+ point.rangeE +'<br/>Weekly Sales:<b> $' + this.y + '</b> ';
+                    return s;
+                }
+            
+                },
+
+                plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0,
+                        dataLabels: {
+                        enabled: true,
+                          align: 'right',
+                         rotation: -90,
+                        color: '#FFFFFF',
+                        x: 4,
+                        y: 10,
+                        style: {
+                            fontWeight: 'bold'
+                        },
+                        formatter: function() {
+                            return '$' + this.y ;
+                        }
+                    }
+                },
+                 series: {
+	            pointWidth: 25
+	        }
+                   //bar
+                },
+                legend: {
+                 enabled: false,
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: 4,
+                y: 10,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF',
+                shadow: true
+            },
+       
+              
+                series: []
+            }
+            //Calls the JSON
+         jQuery.getJSON('@Url.Action("WeeklySales")', null, function (items) {
+                //Creates the new series as stated in the documentation
+                //http://www.highcharts.com/ref/#series
+                
+                var series = {
+                    type: 'spline',
+                    name: 'Weekly Sales',
+                    data: []
+                };
+                
+                jQuery.each(items, function (itemNo, item) {
+                    //Get the items from the JSON and add then
+                    //to the data array of the series
+                   var str,day, date;
+                   
+                   date = new Date(parseInt((item.End).substr(6))); 
+                   var dateE = new Date(parseInt((item.Start).substr(6))); 
+                   day = (date.getUTCMonth() + 1) + "/" +  date.getUTCDate() + "/" + date.getUTCFullYear();
+                   var dayE =  (dateE.getUTCMonth()+1) + "/" + dateE.getUTCDate() + "/" + dateE.getUTCFullYear();
+
+                    series.data.push({
+                        name: item.Key,
+                        y: parseFloat(item.Value), color: colors[0],
+                        range: dayE,
+                        rangeE: day
+                    })
+                });
+                options.series.push(series);
+
+                //Create the chart
+                chart = new Highcharts.Chart(options);
+                chart.render();
+            });
+              var z = '<p style="color:Gray; text-align:left;padding-left:5px"><b>'+ 'Sales Weekly' + 
+                    '</b></p><img src="../../Content/images/bChart.png" style="height:auto;width:auto; float:left"/>';
+             
+            z = z + ' <div>' + '<table><tr><td style="font-size:22px;">$'+ @HomeController.tsales +
+                '</td></tr><tr><td style="font-size:12px;color: Gray;float:right;"><b>Total</b></td></tr></table></div>';
+             $('#SaleAmount').empty();
+             $('#SaleAmount').append(z);
+            z = '<p style="font-size:14px; text-align:left; visibility:hidden"> Sales Today </p>';
+            z =z + '<img src="../../Content/images/Chart.png" style="float:left" />' +
+                    '<table style=" float:left; width:90px; text-align:right">' +
+                    '<tr><td style=" font-size:18px">' + @HomeController.cnt[1] +  '</td></tr>' +
+                    '<tr><td style=" text-align:right; color: Gray; font-size:13px">' + 'Orders</td></tr></table>';
+             $('#order').empty();
+             $('#order').append(z);
+            z = '<p style="font-size:14px; text-align:left; visibility:hidden"> Sales Today </p>';
+            z = z + '<img src="../../Content/images/Chart_1.png" style="height:auto;width:auto; float:left" />' +
+                    '<table style=" float:left; text-align:right; width:90px"><tr><td style=" font-size:18px">' + @HomeController.cnt[0] + '</td></tr>' +
+                    '<tr><td style=" text-align:right; color: Gray; font-size:13px">Customers</td></tr></table>';
+             $('#client').empty();
+             $('#client').append(z);
+        });
+    </script>
+         
+         
+   
+
